@@ -21,21 +21,31 @@ import Link from "next/link";
 import { ProtectedRoute } from "@/components/protected-route";
 import { useAuth } from "@/contexts/auth-context";
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const ongoingSwaps = [
   {
     id: 1,
     item: "Blue Denim Jeans",
-    withUser: "Sarah M.",
+    withUser: "Roshnee G.",
     status: "Waiting for response",
-    image: "/placeholder.svg?height=100&width=100",
+    image:
+      "https://jimmyluxury.in/cdn/shop/files/IMG_9221copy_a4da4c0c-378a-4fe4-a341-76ea2f6c0e60.webp?v=1749016548?height=100&width=100",
   },
   {
     id: 2,
     item: "Wool Sweater",
     withUser: "Mike R.",
     status: "Approved - Arrange pickup",
-    image: "/placeholder.svg?height=100&width=100",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKl0dhBdx1-GHQyCC42SvYaUH604O7EaQvgQ&s?height=100&width=100",
   },
 ];
 
@@ -44,9 +54,10 @@ const completedSwaps = [
     id: 1,
     item: "Black Sneakers",
     withUser: "Emma L.",
-    date: "2024-01-15",
+    date: "2025-01-15",
     rating: 5,
-    image: "/placeholder.svg?height=100&width=100",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh_ZowpFuzxvw02CCEzNvdfCA3knDLymQCHw&s?height=100&width=100",
   },
   {
     id: 2,
@@ -54,7 +65,8 @@ const completedSwaps = [
     withUser: "Alex K.",
     date: "2024-01-10",
     rating: 4,
-    image: "/placeholder.svg?height=100&width=100",
+    image:
+      "https://thehouseofrare.com/cdn/shop/files/mano-mens-t-shirt-white27624_12378c0a-13fe-4ae7-898c-97937bbc2aae.jpg?v=1719483708?height=100&width=100",
   },
 ];
 
@@ -64,7 +76,8 @@ export default function DashboardPage() {
     {
       id: 1,
       title: "Vintage Leather Jacket",
-      image: "/placeholder.svg?height=200&width=200",
+      image:
+        "https://shop.jaminleather.com/cdn/shop/files/file_8cf7a92b-35ab-41bb-9fc6-61b062360081.jpg?v=1721797016&width=1445",
       status: "Available",
       views: 24,
       likes: 8,
@@ -72,7 +85,8 @@ export default function DashboardPage() {
     {
       id: 2,
       title: "Summer Floral Dress",
-      image: "/placeholder.svg?height=200&width=200",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRspL6KzdSrQM3cJRovM9amqs4OcFgeE9gAow&s?height=200&width=200",
       status: "Pending",
       views: 12,
       likes: 3,
@@ -100,6 +114,26 @@ export default function DashboardPage() {
       }
     }
   }, []);
+
+  interface Swap {
+    id: number;
+    item: string;
+    withUser: string;
+    status: string;
+    image: string;
+    email?: string;
+    pickup?: string;
+    date?: string;
+    notes?: string;
+  }
+  const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const openDetails = (swap: any) => {
+    setSelectedSwap(swap);
+    setShowModal(true);
+  };
+
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -281,7 +315,7 @@ export default function DashboardPage() {
                               alt={item.title}
                               width={200}
                               height={200}
-                              className="w-full h-48 object-cover rounded-t-lg"
+                              className="w-full h-48 object-contain rounded-t-lg"
                             />
                             <Badge
                               className={`absolute top-3 right-3 ${
@@ -342,7 +376,11 @@ export default function DashboardPage() {
                                 </span>
                               </div>
                             </div>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openDetails(swap)}
+                            >
                               View Details
                             </Button>
                           </div>
@@ -407,6 +445,97 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 </TabsContent>
+                <Dialog open={showModal} onOpenChange={setShowModal}>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Swap Details</DialogTitle>
+                      <DialogDescription>
+                        Full details of your ongoing swap with{" "}
+                        {selectedSwap?.withUser}.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    {selectedSwap && (
+                      <div className="space-y-5 text-sm text-gray-700 dark:text-gray-300">
+                        {/* Image and Basic Info */}
+                        <div className="flex gap-4 items-center">
+                          <Image
+                            src={selectedSwap.image || "/placeholder.svg"}
+                            alt={selectedSwap.item}
+                            width={100}
+                            height={100}
+                            className="rounded-md object-cover"
+                          />
+                          <div>
+                            <p className="font-semibold text-base text-gray-900 dark:text-white">
+                              {selectedSwap.item}
+                            </p>
+                            <p>
+                              Swap with:{" "}
+                              <strong>{selectedSwap.withUser}</strong>
+                            </p>
+                            <p>
+                              Status:{" "}
+                              <span className="text-yellow-600 font-medium">
+                                {selectedSwap.status}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* More Details */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <p className="font-medium text-gray-800 dark:text-white">
+                              Contact
+                            </p>
+                            <p>{selectedSwap.email || "sarah@example.com"}</p>
+                          </div>
+
+                          <div>
+                            <p className="font-medium text-gray-800 dark:text-white">
+                              Pickup Address
+                            </p>
+                            <p>
+                              {selectedSwap.pickup ||
+                                "123 Green Street, EcoCity"}
+                            </p>
+                          </div>
+
+                          <div>
+                            <p className="font-medium text-gray-800 dark:text-white">
+                              Date Requested
+                            </p>
+                            <p>{selectedSwap.date || "2025-07-12"}</p>
+                          </div>
+
+                          <div>
+                            <p className="font-medium text-gray-800 dark:text-white">
+                              Notes
+                            </p>
+                            <p>
+                              {selectedSwap.notes ||
+                                "Please bring a carry bag."}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-6">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowModal(false)}
+                      >
+                        Close
+                      </Button>
+                      <Button className="bg-green-600 hover:bg-green-700">
+                        Mark as Picked Up
+                      </Button>
+                      <Button variant="destructive">Cancel Swap</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </Tabs>
             </div>
           </div>
