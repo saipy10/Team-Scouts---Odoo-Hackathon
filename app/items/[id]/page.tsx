@@ -10,38 +10,38 @@ import { Heart, Star, Coins, MessageCircle, Leaf, ArrowLeft } from "lucide-react
 import Image from "next/image"
 import Link from "next/link"
 
-// Mock data for the item
+
 const itemData = {
-  id: 1,
-  title: "Vintage Denim Jacket",
+  id: 2,
+  title: "Vintage Wool Blazer",
   description:
-    "Beautiful vintage denim jacket in excellent condition. Perfect for layering and adding a classic touch to any outfit. Features original brass buttons and minimal wear. This jacket has been carefully maintained and comes from a smoke-free home.",
+    "Timeless vintage wool blazer in outstanding condition. Ideal for elevating both casual and formal outfits. Features a structured fit, classic lapels, and original buttons. Carefully preserved in a smoke-free home, this piece adds a refined retro charm to any wardrobe.",
   category: "Outerwear",
-  brand: "Levi's",
+  brand: "Raymond",
   size: "M",
   condition: "Excellent",
-  color: "Classic Blue",
-  material: "100% Cotton Denim",
-  tags: ["vintage", "denim", "classic", "unisex"],
+  color: "Charcoal Grey",
+  material: "100% Wool",
+  tags: ["vintage", "blazer", "formal", "unisex"],
   images: [
-    "/placeholder.svg?height=600&width=600",
-    "/placeholder.svg?height=600&width=600",
-    "/placeholder.svg?height=600&width=600",
-    "/placeholder.svg?height=600&width=600",
+    "https://m.media-amazon.com/images/I/81-EMcSbl1L._SX425_.jpg?height=600&width=600",
+    "https://m.media-amazon.com/images/I/81XnbRfaJgL._SX522_.jpg?height=600&width=600",
+    "https://m.media-amazon.com/images/I/81-EMcSbl1L._SX425_.jpg?height=600&width=600",
   ],
-  points: 15,
+  points: 18,
   status: "Available",
   uploader: {
-    name: "Sarah Johnson",
+    name: "Anany Mehta",
     avatar: "/placeholder.svg?height=100&width=100",
-    rating: 4.8,
-    totalSwaps: 23,
-    location: "San Francisco, CA",
+    rating: 4.7,
+    totalSwaps: 30,
+    location: "Mumbai, India",
   },
-  uploadDate: "2024-01-20",
-  views: 47,
-  likes: 12,
+  uploadDate: "2024-02-05",
+  views: 39,
+  likes: 15,
 }
+
 
 const relatedItems = [
   {
