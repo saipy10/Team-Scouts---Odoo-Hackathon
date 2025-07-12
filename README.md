@@ -8,11 +8,6 @@ Coming Soon...
 
 ---
 
-## 📸 Preview
-
-> Add screenshots or a demo GIF here to showcase key features like the dashboard, item detail, or add item page.
-
----
 
 ## ✨ Features
 
