@@ -489,7 +489,7 @@ export default function DashboardPage() {
                             <p className="font-medium text-gray-800 dark:text-white">
                               Contact
                             </p>
-                            <p>{selectedSwap.email || "sarah@example.com"}</p>
+                            <p>{selectedSwap.email || "roshnee@example.com"}</p>
                           </div>
 
                           <div>
