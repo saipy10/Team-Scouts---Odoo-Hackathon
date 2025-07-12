@@ -1,34 +1,26 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Plus, Search, LogOut, Settings, Star, Clock, CheckCircle, Coins, Leaf } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { ProtectedRoute } from "@/components/protected-route"
-import { useAuth } from "@/contexts/auth-context"
-
-const userItems = [
-  {
-    id: 1,
-    title: "Vintage Leather Jacket",
-    image: "/placeholder.svg?height=200&width=200",
-    status: "Available",
-    views: 24,
-    likes: 8,
-  },
-  {
-    id: 2,
-    title: "Summer Floral Dress",
-    image: "/placeholder.svg?height=200&width=200",
-    status: "Pending",
-    views: 12,
-    likes: 3,
-  },
-]
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Plus,
+  Search,
+  LogOut,
+  Settings,
+  Star,
+  Clock,
+  CheckCircle,
+  Coins,
+  Leaf,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ProtectedRoute } from "@/components/protected-route";
+import { useAuth } from "@/contexts/auth-context";
+import { useEffect, useState } from "react";
 
 const ongoingSwaps = [
   {
@@ -45,7 +37,7 @@ const ongoingSwaps = [
     status: "Approved - Arrange pickup",
     image: "/placeholder.svg?height=100&width=100",
   },
-]
+];
 
 const completedSwaps = [
   {
@@ -64,11 +56,50 @@ const completedSwaps = [
     rating: 4,
     image: "/placeholder.svg?height=100&width=100",
   },
-]
+];
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth()
-
+  const { user, logout } = useAuth();
+  const [userItems, setUserItems] = useState([
+    {
+      id: 1,
+      title: "Vintage Leather Jacket",
+      image: "/placeholder.svg?height=200&width=200",
+      status: "Available",
+      views: 24,
+      likes: 8,
+    },
+    {
+      id: 2,
+      title: "Summer Floral Dress",
+      image: "/placeholder.svg?height=200&width=200",
+      status: "Pending",
+      views: 12,
+      likes: 3,
+    },
+  ]);
+  useEffect(() => {
+    const newItem = localStorage.getItem("newItem");
+    if (newItem) {
+      try {
+        const parsedItem = JSON.parse(newItem);
+        setUserItems((prev) => [
+          ...prev,
+          {
+            id: prev.length + 1,
+            title: parsedItem.title,
+            image: parsedItem.image,
+            status: "Pending",
+            views: 0,
+            likes: 0,
+          },
+        ]);
+        localStorage.removeItem("newItem");
+      } catch (err) {
+        console.error("Failed to parse newItem from localStorage");
+      }
+    }
+  }, []);
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -78,7 +109,9 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <Link href="/" className="flex items-center gap-2">
                 <Leaf className="h-8 w-8 text-green-600 dark:text-green-400" />
-                <span className="text-xl font-bold text-green-800 dark:text-green-400">ReWear</span>
+                <span className="text-xl font-bold text-green-800 dark:text-green-400">
+                  ReWear
+                </span>
               </Link>
 
               <nav className="hidden md:flex items-center gap-6">
@@ -131,7 +164,13 @@ export default function DashboardPage() {
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
                     <Avatar className="h-20 w-20 mx-auto mb-4">
-                      <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
+                      <AvatarImage
+                        src={
+                          "https://png.pngtree.com/png-clipart/20230913/original/pngtree-profile-picture-png-image_11063391.png"
+                        }
+                        alt={user?.name}
+                      />
+                      {/* <AvatarImage src={user?.avatar || "https://png.pngtree.com/png-clipart/20230913/original/pngtree-profile-picture-png-image_11063391.png"} alt={user?.name} /> */}
                       <AvatarFallback>
                         {user?.name
                           ?.split(" ")
@@ -139,11 +178,17 @@ export default function DashboardPage() {
                           .join("")}
                       </AvatarFallback>
                     </Avatar>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{user?.name}</h2>
-                    <p className="text-gray-600 dark:text-gray-300">{user?.email}</p>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      {user?.name}
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {user?.email}
+                    </p>
                     <div className="flex items-center justify-center gap-1 mt-2">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">4.8</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        4.8
+                      </span>
                     </div>
                   </div>
 
@@ -151,19 +196,31 @@ export default function DashboardPage() {
                     <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                       <div className="flex items-center gap-2">
                         <Coins className="h-5 w-5 text-green-600 dark:text-green-400" />
-                        <span className="font-medium text-gray-900 dark:text-white">Points</span>
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          Points
+                        </span>
                       </div>
-                      <span className="text-xl font-bold text-green-600 dark:text-green-400">{user?.points}</span>
+                      <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                        {user?.points}
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">12</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Total Swaps</div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                          12
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                          Total Swaps
+                        </div>
                       </div>
                       <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">{userItems.length}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">Listed Items</div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {userItems.length}
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                          Listed Items
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -176,7 +233,10 @@ export default function DashboardPage() {
                       </Button>
                     </Link>
                     <Link href="/browse">
-                      <Button variant="outline" className="w-full bg-transparent">
+                      <Button
+                        variant="outline"
+                        className="w-full bg-transparent"
+                      >
                         <Search className="h-4 w-4 mr-2" />
                         Browse Items
                       </Button>
@@ -197,7 +257,9 @@ export default function DashboardPage() {
 
                 <TabsContent value="items" className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">My Listed Items</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      My Listed Items
+                    </h3>
                     <Link href="/items/new">
                       <Button className="bg-green-600 hover:bg-green-700">
                         <Plus className="h-4 w-4 mr-2" />
@@ -223,14 +285,18 @@ export default function DashboardPage() {
                             />
                             <Badge
                               className={`absolute top-3 right-3 ${
-                                item.status === "Available" ? "bg-green-600" : "bg-yellow-600"
+                                item.status === "Available"
+                                  ? "bg-green-600"
+                                  : "bg-yellow-600"
                               }`}
                             >
                               {item.status}
                             </Badge>
                           </div>
                           <div className="p-4">
-                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h4>
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                              {item.title}
+                            </h4>
                             <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
                               <span>{item.views} views</span>
                               <span>{item.likes} likes</span>
@@ -243,11 +309,16 @@ export default function DashboardPage() {
                 </TabsContent>
 
                 <TabsContent value="ongoing" className="space-y-6">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Ongoing Swaps</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Ongoing Swaps
+                  </h3>
 
                   <div className="space-y-4">
                     {ongoingSwaps.map((swap) => (
-                      <Card key={swap.id} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <Card
+                        key={swap.id}
+                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      >
                         <CardContent className="p-6">
                           <div className="flex items-center gap-4">
                             <Image
@@ -258,11 +329,17 @@ export default function DashboardPage() {
                               className="w-16 h-16 object-cover rounded-lg"
                             />
                             <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 dark:text-white">{swap.item}</h4>
-                              <p className="text-gray-600 dark:text-gray-300">Swap with {swap.withUser}</p>
+                              <h4 className="font-semibold text-gray-900 dark:text-white">
+                                {swap.item}
+                              </h4>
+                              <p className="text-gray-600 dark:text-gray-300">
+                                Swap with {swap.withUser}
+                              </p>
                               <div className="flex items-center gap-2 mt-2">
                                 <Clock className="h-4 w-4 text-yellow-500" />
-                                <span className="text-sm text-gray-600 dark:text-gray-300">{swap.status}</span>
+                                <span className="text-sm text-gray-600 dark:text-gray-300">
+                                  {swap.status}
+                                </span>
                               </div>
                             </div>
                             <Button variant="outline" size="sm">
@@ -276,11 +353,16 @@ export default function DashboardPage() {
                 </TabsContent>
 
                 <TabsContent value="history" className="space-y-6">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Completed Swaps</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Completed Swaps
+                  </h3>
 
                   <div className="space-y-4">
                     {completedSwaps.map((swap) => (
-                      <Card key={swap.id} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <Card
+                        key={swap.id}
+                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      >
                         <CardContent className="p-6">
                           <div className="flex items-center gap-4">
                             <Image
@@ -291,19 +373,32 @@ export default function DashboardPage() {
                               className="w-16 h-16 object-cover rounded-lg"
                             />
                             <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 dark:text-white">{swap.item}</h4>
-                              <p className="text-gray-600 dark:text-gray-300">Swapped with {swap.withUser}</p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">{swap.date}</p>
+                              <h4 className="font-semibold text-gray-900 dark:text-white">
+                                {swap.item}
+                              </h4>
+                              <p className="text-gray-600 dark:text-gray-300">
+                                Swapped with {swap.withUser}
+                              </p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                {swap.date}
+                              </p>
                             </div>
                             <div className="text-right">
                               <div className="flex items-center gap-1 mb-2">
                                 <CheckCircle className="h-4 w-4 text-green-500" />
-                                <span className="text-sm text-green-600 dark:text-green-400">Completed</span>
+                                <span className="text-sm text-green-600 dark:text-green-400">
+                                  Completed
+                                </span>
                               </div>
                               <div className="flex items-center gap-1">
-                                {Array.from({ length: swap.rating }).map((_, i) => (
-                                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                ))}
+                                {Array.from({ length: swap.rating }).map(
+                                  (_, i) => (
+                                    <Star
+                                      key={i}
+                                      className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                    />
+                                  )
+                                )}
                               </div>
                             </div>
                           </div>
@@ -318,5 +413,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </ProtectedRoute>
-  )
+  );
 }

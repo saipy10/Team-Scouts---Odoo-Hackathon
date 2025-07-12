@@ -32,7 +32,7 @@ const itemData = {
   status: "Available",
   uploader: {
     name: "Anany Mehta",
-    avatar: "/placeholder.svg?height=100&width=100",
+    avatar: "https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg?height=100&width=100",
     rating: 4.7,
     totalSwaps: 30,
     location: "Mumbai, India",
@@ -47,21 +47,21 @@ const relatedItems = [
   {
     id: 2,
     title: "Blue Denim Jeans",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://m.media-amazon.com/images/I/71hyi5xsv+L._UY1100_.jpg",
     points: 12,
     rating: 4.7,
   },
   {
     id: 3,
     title: "White Cotton T-Shirt",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://m.media-amazon.com/images/I/616NqRPrOML._UY1100_.jpg",
     points: 8,
     rating: 4.5,
   },
   {
     id: 4,
     title: "Brown Leather Boots",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://m.media-amazon.com/images/I/71yeyymAV0L._UY1000_.jpg?height=200&width=200",
     points: 25,
     rating: 4.9,
   },
