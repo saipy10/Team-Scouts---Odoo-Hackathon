@@ -1,1 +1,0 @@
-# Team-Scouts---Odoo-Hackathon
