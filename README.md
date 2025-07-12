@@ -94,8 +94,7 @@ Coming Soon...
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/rewear.git
-cd rewear
+git clone https://github.com/saipy10/Team-Scouts---Odoo-Hackathon.git
 
 # Install dependencies
 npm install
