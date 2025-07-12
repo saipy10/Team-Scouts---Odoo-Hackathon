@@ -90,6 +90,16 @@ const users = [
 
 export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [password, setPassword] = useState("")
+
+  const handleLogin = () => {
+    if (password === "admin123") {
+      setIsLoggedIn(true)
+    } else {
+      alert("Incorrect admin password.")
+    }
+  }
 
   const handleApprove = (itemId: number) => {
     console.log(`Approved item ${itemId}`)
@@ -101,6 +111,33 @@ export default function AdminPage() {
 
   const handleDeleteItem = (itemId: number) => {
     console.log(`Deleted item ${itemId}`)
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <Card className="w-full max-w-md p-6 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-gray-900 dark:text-white">Admin Login</CardTitle>
+            <CardDescription className="text-gray-600 dark:text-gray-300">
+              Enter the admin password to access the dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Input
+              type="password"
+              placeholder="Enter admin password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="dark:bg-gray-700 dark:text-white"
+            />
+            <Button className="w-full" onClick={handleLogin}>
+              Login
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -124,7 +161,7 @@ export default function AdminPage() {
                   className="pl-10 w-64 h-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                 />
               </div>
-              <Button variant="outline">Logout</Button>
+              <Button variant="outline" onClick={() => setIsLoggedIn(false)}>Logout</Button>
             </div>
           </div>
         </div>
