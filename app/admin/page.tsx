@@ -10,109 +10,149 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Check, X, Search, Eye, Trash2, Users, Package, AlertTriangle, TrendingUp, Leaf } from "lucide-react"
 
-const pendingItems = [
-  {
-    id: 1,
-    title: "Vintage Leather Jacket",
-    uploader: "John Doe",
-    category: "Outerwear",
-    condition: "Excellent",
-    uploadDate: "2024-01-22",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: 2,
-    title: "Designer Handbag",
-    uploader: "Sarah Smith",
-    category: "Accessories",
-    condition: "Like New",
-    uploadDate: "2024-01-22",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: 3,
-    title: "Summer Dress",
-    uploader: "Emma Wilson",
-    category: "Dresses",
-    condition: "Good",
-    uploadDate: "2024-01-21",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-]
+type Item = {
+  id: number
+  title: string
+  uploader: string
+  category: string
+  condition?: string
+  status?: string
+  views?: number
+  likes?: number
+  uploadDate: string
+  image?: string
+}
 
-const allItems = [
-  {
-    id: 4,
-    title: "Blue Denim Jeans",
-    uploader: "Mike Johnson",
-    category: "Bottoms",
-    status: "Active",
-    views: 45,
-    likes: 12,
-    uploadDate: "2024-01-20",
-  },
-  {
-    id: 5,
-    title: "White Sneakers",
-    uploader: "Lisa Brown",
-    category: "Shoes",
-    status: "Swapped",
-    views: 67,
-    likes: 23,
-    uploadDate: "2024-01-18",
-  },
-]
-
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    joinDate: "2023-12-15",
-    totalItems: 5,
-    totalSwaps: 12,
-    rating: 4.8,
-    status: "Active",
-    avatar: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: 2,
-    name: "Sarah Smith",
-    email: "sarah@example.com",
-    joinDate: "2023-11-20",
-    totalItems: 8,
-    totalSwaps: 15,
-    rating: 4.9,
-    status: "Active",
-    avatar: "/placeholder.svg?height=100&width=100",
-  },
-]
+type User = {
+  id: number
+  name: string
+  email: string
+  joinDate: string
+  totalItems: number
+  totalSwaps: number
+  rating: number
+  status: string
+  avatar: string
+}
 
 export default function AdminPage() {
-  const [searchTerm, setSearchTerm] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [password, setPassword] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
 
+  const [pendingItems, setPendingItems] = useState<Item[]>([
+    {
+      id: 1,
+      title: "Vintage Leather Jacket",
+      uploader: "John Doe",
+      category: "Outerwear",
+      condition: "Excellent",
+      uploadDate: "2024-01-22",
+      image: "/placeholder.svg",
+    },
+    {
+      id: 2,
+      title: "Designer Handbag",
+      uploader: "Sarah Smith",
+      category: "Accessories",
+      condition: "Like New",
+      uploadDate: "2024-01-22",
+      image: "/placeholder.svg",
+    },
+    {
+      id: 3,
+      title: "Summer Dress",
+      uploader: "Emma Wilson",
+      category: "Dresses",
+      condition: "Good",
+      uploadDate: "2024-01-21",
+      image: "/placeholder.svg",
+    },
+  ])
+
+  const [allItems, setAllItems] = useState<Item[]>([
+    {
+      id: 4,
+      title: "Blue Denim Jeans",
+      uploader: "Mike Johnson",
+      category: "Bottoms",
+      status: "Active",
+      views: 45,
+      likes: 12,
+      uploadDate: "2024-01-20",
+    },
+    {
+      id: 5,
+      title: "White Sneakers",
+      uploader: "Lisa Brown",
+      category: "Shoes",
+      status: "Swapped",
+      views: 67,
+      likes: 23,
+      uploadDate: "2024-01-18",
+    },
+  ])
+
+  const [users, setUsers] = useState<User[]>([
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john@example.com",
+      joinDate: "2023-12-15",
+      totalItems: 5,
+      totalSwaps: 12,
+      rating: 4.8,
+      status: "Active",
+      avatar: "/placeholder.svg",
+    },
+    {
+      id: 2,
+      name: "Sarah Smith",
+      email: "sarah@example.com",
+      joinDate: "2023-11-20",
+      totalItems: 8,
+      totalSwaps: 15,
+      rating: 4.9,
+      status: "Active",
+      avatar: "/placeholder.svg",
+    },
+  ])
+
+  // ✅ LOGIN FUNCTION
   const handleLogin = () => {
-    if (password === "admin123") {
-      setIsLoggedIn(true)
-    } else {
-      alert("Incorrect admin password.")
+    if (password === "admin123") setIsLoggedIn(true)
+    else alert("Incorrect admin password.")
+  }
+
+  // ✅ APPROVE FUNCTION
+  const handleApprove = (itemId: number) => {
+    const item = pendingItems.find((i) => i.id === itemId)
+    if (item) {
+      const updatedPending = pendingItems.filter((i) => i.id !== itemId)
+      setPendingItems(updatedPending)
+      setAllItems([{ ...item, status: "Active", views: 0, likes: 0 }, ...allItems])
     }
   }
 
-  const handleApprove = (itemId: number) => {
-    console.log(`Approved item ${itemId}`)
-  }
-
+  // ✅ REJECT FUNCTION
   const handleReject = (itemId: number) => {
-    console.log(`Rejected item ${itemId}`)
+    const updatedPending = pendingItems.filter((i) => i.id !== itemId)
+    setPendingItems(updatedPending)
   }
 
+  // ✅ DELETE ITEM FUNCTION
   const handleDeleteItem = (itemId: number) => {
-    console.log(`Deleted item ${itemId}`)
+    const updatedItems = allItems.filter((i) => i.id !== itemId)
+    setAllItems(updatedItems)
   }
 
+  // ✅ LOGOUT FUNCTION
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    setPassword("")
+  }
+
+  // ✅ LOGIN PAGE
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
